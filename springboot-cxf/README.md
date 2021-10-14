@@ -1,4 +1,4 @@
-This Spring Boot app uses Apache CXF for the SOAP web service endpoints. It is configured to uses mutual authentication with self-signed certificates. The CLI commands used to generate the SSL artifacts found in src/main/resources are documented below.
+This Spring Boot app uses Apache CXF for the SOAP web service endpoints. It is configured to use mutual authentication with self-signed certificates. The CLI commands used to generate the SSL artifacts found in ```src/main/resources``` are documented below.
 
 ##### Create certificate for server application:
 ```keytool -genkeypair -alias server-app -keyalg RSA -keysize 2048 -storetype JKS -keystore server-app.jks -validity 3650```
