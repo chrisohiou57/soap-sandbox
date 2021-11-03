@@ -1,0 +1,44 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "retail-account-soap-service",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.chrias.accountsoapservice.AccountSoapServiceApplication",
+            "projectName": "account-soap-service",
+            "args": "--spring.profiles.active=retail --server.port=8043"
+        },
+        {
+            "type": "java",
+            "name": "investment-account-soap-service",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.chrias.accountsoapservice.AccountSoapServiceApplication",
+            "projectName": "account-soap-service",
+            "args": "--spring.profiles.active=investment --server.port=8044"
+        },
+        {
+            "type": "java",
+            "name": "retail-account-soap-service-mTLS",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.chrias.accountsoapservice.AccountSoapServiceApplication",
+            "projectName": "account-soap-service",
+            "args": "--spring.profiles.active=retail,mTLS --server.port=8043"
+        },
+        {
+            "type": "java",
+            "name": "investment-account-soap-service-mTLS",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.chrias.accountsoapservice.AccountSoapServiceApplication",
+            "projectName": "account-soap-service",
+            "args": "--spring.profiles.active=investment,mTLS --server.port=8044"
+        }
+    ]
+}

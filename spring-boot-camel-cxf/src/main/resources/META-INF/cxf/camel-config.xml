@@ -1,0 +1,65 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:cxf="http://camel.apache.org/schema/cxf"
+    xmlns:http="http://cxf.apache.org/transports/http/configuration"
+    xmlns:sec="http://cxf.apache.org/configuration/security"
+    xmlns:beans="http://www.springframework.org/schema/beans"
+    xmlns:jaxws="http://cxf.apache.org/jaxws"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf.xsd
+        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
+        http://cxf.apache.org/transports/http/configuration http://cxf.apache.org/schemas/configuration/http-conf.xsd
+        http://cxf.apache.org/configuration/security http://cxf.apache.org/schemas/configuration/security.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+        http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+
+    <!-- This is created automagically by the camel-cxf-starter. We just need to import it. -->
+    <import resource="classpath:META-INF/cxf/cxf.xml" />
+
+    <!--
+    This demonstrates that you could use CXF XML config in Spring Boot if you wanted to. For this file to be used
+    you need to enable the xmlconfig Spring profile. See the CxfXmlConfig class. For descriptions of the components
+    below take a look at the Java Config equivalents in the CxfJavaConfig class.
+
+    For more general details about configuring the app this way see: http://cxf.apache.org/docs/configuration.html
+    -->
+
+    <jaxws:endpoint
+        xmlns:employee="http://www.chrias.com/employee"
+        id="employeeService"
+        address="/JaxWsEmployeeService"
+        serviceName="employee:EmployeeService"
+        endpointName="employee:SOAPOverHTTPEmployeeService"
+        implementor="#employeeServiceEndpoint" />
+
+    <cxf:cxfEndpoint
+        id="cxfEmployeeServiceBackend"
+        address="https://localhost:8043/soap/service/employee"
+        serviceClass="com.chrias.bootcamelcfx.endpoint.EmployeeServiceEndpoint" />
+
+    <cxf:cxfEndpoint
+        id="cxfEmployeeServiceProxy"
+        address="/CxfEmployeeServiceProxy"
+        serviceClass="com.chrias.bootcamelcfx.endpoint.EmployeeServiceEndpoint" />
+
+    <!--
+    This creates a CXF HTTP conduit for handling SSL mutual authentication. It can be excluded and mutual
+    authentication will still work with remote web services because the Spring Boot camel-cxf-starter dependency
+    has configuration options for SSL. That config can be found in application.properties. If you excluded the 
+    Spring Boot starter config in application.properties and enable this code everything will still work. There
+    is a Java config example of this in the CxfJavaConfig class.
+    -->
+    <!-- <http:conduit name="https://localhost:.*">
+        <http:tlsClientParameters>
+            <sec:certAlias>client-app</sec:certAlias>
+            <sec:trustManagers>
+                <sec:keyStore type="JKS" password="changeit" resource="client-app.jks"/>
+            </sec:trustManagers>
+            <sec:keyManagers keyPassword="changeit">
+                <sec:keyStore type="jks" password="changeit" resource="client-app.jks" />
+            </sec:keyManagers>
+        </http:tlsClientParameters>
+    </http:conduit> -->
+
+</beans>

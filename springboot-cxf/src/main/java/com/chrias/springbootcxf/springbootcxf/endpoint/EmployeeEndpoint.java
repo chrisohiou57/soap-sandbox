@@ -30,10 +30,9 @@ public class EmployeeEndpoint implements EmployeeServicePortType {
     @Override
     public EmployeesResponse getEmployeesByName(EmployeeByNameRequest parameters) {
         EmployeesResponse employeesResponse = new EmployeesResponse();
-        try{
+        try {
             employeesResponse.getEmployee().addAll(backendService.getEmployeesByName(parameters.getFirstname(), parameters.getLastname()));
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             log.error("Error while setting values for employee object", e);
         }
         return employeesResponse;
@@ -44,8 +43,7 @@ public class EmployeeEndpoint implements EmployeeServicePortType {
         EmployeeResponse employeeResponse = new EmployeeResponse();
         try{
             employeeResponse.setEmployee(backendService.getEmployeeById(parameters.getId()));
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             log.error("Error while setting values for employee object", e);
         }
         return employeeResponse;

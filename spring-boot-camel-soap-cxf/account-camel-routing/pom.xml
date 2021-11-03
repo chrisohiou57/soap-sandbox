@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.5.6</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>com.chrias</groupId>
+	<artifactId>account-camel-routing</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<name>account-camel-routing</name>
+	<description>Demo Spring Boot project using Apache Camel components to implement EIPs and JMS exchanges</description>
+
+	<properties>
+		<java.version>11</java.version>
+		<camel.version>3.12.0</camel.version>
+		<cxf.version>3.4.5</cxf.version>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.apache.camel.springboot</groupId>
+				<artifactId>camel-spring-boot-dependencies</artifactId>
+				<version>${camel.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel.springboot</groupId>
+			<artifactId>camel-cxf-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel.springboot</groupId>
+  			<artifactId>camel-soap-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-direct</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-bean</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.chrias</groupId>
+			<artifactId>account-soap-model</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.chrias</groupId>
+			<artifactId>account-soap-ssl</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+
+		<!-- https://issues.apache.org/jira/browse/CXF-8457 -->
+		<!-- https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/jaxws -->
+		<!--
+			https://docs.splunk.com/Documentation/Splunk/8.2.2/Installation/DeployandrunSplunkEnterpriseinsideDockercontainers
+			https://docs.splunk.com/Observability/gdi/opentelemetry/resources.html
+		-->
+		<!-- 
+			https://medium.com/nerd-for-tech/logging-at-scale-in-kubernetes-using-grafana-loki-3bb2eb0c0872
+			https://dev.to/antongoncharov/distributed-logs-and-tracing-with-spring-apache-camel-opentelemetry-and-grafana-example-554e
+			https://github.com/grafana/tempo/tree/main/example/helm
+			
+			Other good reading
+			https://grafana.com/docs/tempo/latest/getting-started/
+			https://www.programmingwithwolfgang.com/collect-and-query-kubernetes-logs-with-grafana-loki/
+		 -->
+		<dependency>
+			<groupId>org.apache.camel.springboot</groupId>
+			<artifactId>camel-opentelemetry-starter</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-codegen-plugin</artifactId>
+				<version>${cxf.version}</version>
+				<executions>
+					<execution>
+						<id>generate-sources</id>
+						<phase>generate-sources</phase>
+						<configuration>
+							<sourceRoot>${project.build.directory}/generated-sources/cxf</sourceRoot>
+							<wsdlOptions>
+								<wsdlOption>
+									<wsdl>${basedir}/src/main/resources/wsdl/Account.wsdl</wsdl>
+									<extraargs>
+										<extraarg>-p</extraarg>
+										<extraarg>http://www.chrias.com/account=com.chrias.camelsoapmodel.account</extraarg>
+									</extraargs>
+								</wsdlOption>
+							</wsdlOptions>
+						</configuration>
+						<goals>
+							<goal>wsdl2java</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

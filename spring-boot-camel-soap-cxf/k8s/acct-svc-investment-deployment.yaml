@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: investment-account-api
+  name: investment-account-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: investment-account-api
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: investment-account-api
+    spec:
+      containers:
+      - image: chrias/account-soap-service
+        imagePullPolicy: Never
+        name: account-soap-service
+        resources: {}
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: investment
+        - name: API_URI_SCHEME
+          value: http
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: soapdemo
+  name: investment-acct-api-svc
+  labels:
+    app: investment-account-api
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+  selector:
+    app: investment-account-api

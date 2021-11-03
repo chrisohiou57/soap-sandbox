@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: camel-account-api
+  name: camel-account-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: camel-account-api
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: camel-account-api
+    spec:
+      containers:
+      - image: chrias/camel-account-soap-service
+        imagePullPolicy: Never
+        name: camel-account-soap-service
+        resources: {}
+        env:
+        - name: API_URI_SCHEME
+          value: http
+        - name: OTEL_RESOURCE_ATTRIBUTES
+          value: service.name=camel-account-api
+        # - name: OTEL_EXPORTER_OTLP_ENDPOINT
+        #   value: http://$(OPENTELEMETRY_COLLECTOR_SVC_SERVICE_HOST):$(OPENTELEMETRY_COLLECTOR_SVC_SERVICE_PORT)
+        # - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+        #   value: http://$(OPENTELEMETRY_COLLECTOR_SVC_SERVICE_HOST):$(OPENTELEMETRY_COLLECTOR_SVC_SERVICE_PORT)
+        # - name: OTEL_EXPORTER_OTLP_METRICS_ENDPOINT
+        #   value: http://$(OPENTELEMETRY_COLLECTOR_SVC_SERVICE_HOST):$(OPENTELEMETRY_COLLECTOR_SVC_SERVICE_PORT)
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: http://$(TEMPO_SERVICE_HOST):$(TEMPO_PORT_55680_TCP_PORT)
+        - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+          value: http://$(TEMPO_SERVICE_HOST):$(TEMPO_PORT_55680_TCP_PORT)
+        - name: OTEL_EXPORTER_OTLP_METRICS_ENDPOINT
+          value: http://$(TEMPO_SERVICE_HOST):$(TEMPO_PORT_55680_TCP_PORT)
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: camel-account-api
+  name: camel-acct-api-gateway-svc
+  namespace: soapdemo
+spec:
+  clusterIP: 10.105.78.36
+  clusterIPs:
+  - 10.105.78.36
+  externalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - nodePort: 30950
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: camel-account-api
+  sessionAffinity: None
+  type: NodePort
+status:
+  loadBalancer:
+    ingress:
+    - hostname: localhost

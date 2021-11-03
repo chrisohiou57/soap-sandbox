@@ -10,7 +10,7 @@ import java.util.List;
 @Service
 public class BackendService {
 
-    public List<Employee> getEmployeesByName(String firstName, String lastName) throws Exception{
+    public List<Employee> getEmployeesByName(String firstName, String lastName) throws Exception {
             Employee employee1 = new Employee();
             employee1.setId(1);
             employee1.setFirstname("Jeffery");
@@ -30,7 +30,7 @@ public class BackendService {
             return Arrays.asList(employee1, employee2);
     }
 
-    public Employee getEmployeeById(long id) throws Exception{
+    public Employee getEmployeeById(long id) throws Exception {
         Employee employee = new Employee();
         employee.setId(id);
         employee.setFirstname("John");

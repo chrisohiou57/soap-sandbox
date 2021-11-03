@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
+        xmlns:tns="http://www.chrias.com/account"
+        targetNamespace="http://www.chrias.com/account"
+        elementFormDefault="qualified"
+        attributeFormDefault="unqualified"
+        vc:minVersion="1.1">
+
+    <xs:complexType name="Account">
+        <xs:sequence>
+            <xs:element name="customerId" type="xs:string" />
+            <xs:element name="accountNumber" type="xs:string" />
+            <xs:element name="accountNickname" type="xs:string" />
+            <xs:element name="accountType" type="tns:AccountType" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="AccountType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="TRADITIONAL_IRA" />
+            <xs:enumeration value="ROTH_IRA" />
+            <xs:enumeration value="TRADITIONAL_401K" />
+            <xs:enumeration value="CHECKING" />
+            <xs:enumeration value="SAVINGS" />
+            <xs:enumeration value="CERTIFICATE_OF_DEPOSIT" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:element name="getAccountsRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="customerId" type="xs:string" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getAccountsResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="account" type="tns:Account" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+</xs:schema>

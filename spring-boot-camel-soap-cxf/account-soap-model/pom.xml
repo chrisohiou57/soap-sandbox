@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.chrias</groupId>
+  <artifactId>account-soap-model</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <name>account-soap-model</name>
+  <description>A project to build reusable JAX-WS/JAX-B model classes in demo SOAP web services</description>
+
+  <properties>
+		<java.version>11</java.version>
+		<cxf.version>3.4.5</cxf.version>
+		<jaxb.version>2.3.3</jaxb.version>
+		<maven.compiler.source>11</maven.compiler.source>
+     	<maven.compiler.target>11</maven.compiler.target>
+  </properties>
+
+  <dependencies>
+	<dependency>
+		<groupId>com.sun.xml.bind</groupId>
+		<artifactId>jaxb-impl</artifactId>
+		<version>${jaxb.version}</version>
+		<scope>provided</scope>
+	</dependency>
+	<dependency>
+		<groupId>com.sun.xml.ws</groupId>
+		<artifactId>jaxws-ri</artifactId>
+		<version>${jaxb.version}</version>
+		<type>pom</type>
+		<scope>provided</scope>
+	</dependency>
+  </dependencies>
+
+  <build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-codegen-plugin</artifactId>
+				<version>${cxf.version}</version>
+				<executions>
+					<execution>
+						<id>generate-sources</id>
+						<phase>generate-sources</phase>
+						<configuration>
+							<sourceRoot>${project.build.directory}/generated-sources/cxf</sourceRoot>
+							<wsdlOptions>
+								<wsdlOption>
+									<wsdl>${basedir}/src/main/resources/wsdl/retail/RetailAccount.wsdl</wsdl>
+									<extraargs>
+										<extraarg>-p</extraarg>
+										<extraarg>http://www.chrias.com/retailaccount=com.chrias.soapmodel.retail</extraarg>
+									</extraargs>
+								</wsdlOption>
+								<wsdlOption>
+									<wsdl>${basedir}/src/main/resources/wsdl/investment/InvestmentAccount.wsdl</wsdl>
+									<extraargs>
+										<extraarg>-p</extraarg>
+										<extraarg>http://www.chrias.com/investmentaccount=com.chrias.soapmodel.investment</extraarg>
+									</extraargs>
+								</wsdlOption>
+							</wsdlOptions>
+						</configuration>
+						<goals>
+							<goal>wsdl2java</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

@@ -1,0 +1,33 @@
+datasources:
+ datasources.yaml:
+   apiVersion: 1
+   datasources:
+     - name: Tempo
+       type: tempo
+       access: browser
+       orgId: 1
+       uid: tempo
+       url: http://$TEMPO_SERVICE_HOST:$TEMPO_SERVICE_PORT
+       isDefault: true
+       editable: true
+     - name: Loki
+       type: loki
+       access: browser
+       orgId: 1
+       uid: loki
+       url: http://$LOKI_SERVICE_HOST:$LOKI_SERVICE_PORT
+       isDefault: false
+       editable: true
+       jsonData:
+         derivedFields:
+           - datasourceName: Tempo
+             matcherRegex: "traceID=(\\w+)"
+             name: TraceID
+             url: "$${__value.raw}"
+             datasourceUid: tempo
+env:
+ JAEGER_AGENT_PORT: 6831
+adminUser: admin
+adminPassword: password
+service:
+ type: LoadBalancer

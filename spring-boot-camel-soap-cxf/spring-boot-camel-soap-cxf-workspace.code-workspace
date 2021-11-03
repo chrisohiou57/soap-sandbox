@@ -1,0 +1,23 @@
+{
+	"folders": [
+		{
+			"name": "account-soap-model",
+			"path": "account-soap-model"
+		},
+		{
+			"name": "account-soap-service",
+			"path": "account-soap-service"
+		},
+		{
+			"name": "account-soap-ssl",
+			"path": "account-soap-ssl"
+		},
+		{
+			"name": "account-camel-routing",
+			"path": "account-camel-routing"
+		}
+	],
+	"settings": {
+		"java.configuration.updateBuildConfiguration": "automatic"
+	}
+}

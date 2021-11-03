@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "spring-boot-camel-cxf-java-config",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.chrias.bootcamelcfx.SpringBootCamelCxfApplication",
+            "projectName": "spring-boot-camel-cxf",
+            "args": "--spring.profiles.active=javaconfig"
+        },
+        {
+            "type": "java",
+            "name": "spring-boot-camel-cxf-xml-config",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.chrias.bootcamelcfx.SpringBootCamelCxfApplication",
+            "projectName": "spring-boot-camel-cxf",
+            "args": "--spring.profiles.active=xmlconfig"
+        }
+    ]
+}

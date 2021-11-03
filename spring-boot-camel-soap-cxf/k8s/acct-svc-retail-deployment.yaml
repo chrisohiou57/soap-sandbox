@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: retail-account-api
+  name: retail-account-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: retail-account-api
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: retail-account-api
+    spec:
+      containers:
+      - image: chrias/account-soap-service
+        imagePullPolicy: Never
+        name: account-soap-service
+        resources: {}
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: retail
+        - name: API_URI_SCHEME
+          value: http
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: soapdemo
+  name: retail-account-api-svc
+  labels:
+    app: retail-account-api
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+  selector:
+    app: retail-account-api
