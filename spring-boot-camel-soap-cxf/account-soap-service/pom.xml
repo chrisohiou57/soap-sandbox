@@ -44,6 +44,11 @@
 			<version>${cxf.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>io.opentelemetry.instrumentation</groupId>
+			<artifactId>opentelemetry-jaxws-2.0-cxf-3.0</artifactId>
+			<version>1.7.1-alpha</version>
+		</dependency>
+		<dependency>
 			<groupId>com.chrias</groupId>
 			<artifactId>account-soap-model</artifactId>
 			<version>1.0.0-SNAPSHOT</version>

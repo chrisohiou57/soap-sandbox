@@ -27,6 +27,14 @@ spec:
           value: investment
         - name: API_URI_SCHEME
           value: http
+        - name: OTEL_RESOURCE_ATTRIBUTES
+          value: service.name=account-invest-service
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: http://$(TEMPO_SERVICE_HOST):$(TEMPO_PORT_55680_TCP_PORT)
+        - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+          value: http://$(TEMPO_SERVICE_HOST):$(TEMPO_PORT_55680_TCP_PORT)
+        - name: OTEL_EXPORTER_OTLP_METRICS_ENDPOINT
+          value: http://$(TEMPO_SERVICE_HOST):$(TEMPO_PORT_55680_TCP_PORT)
 status: {}
 ---
 apiVersion: v1
