@@ -16,6 +16,10 @@ spec:
       creationTimestamp: null
       labels:
         app: camel-account-api
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+        prometheus.io/path: "/actuator/prometheus"
     spec:
       containers:
       - image: chrias/camel-account-soap-service

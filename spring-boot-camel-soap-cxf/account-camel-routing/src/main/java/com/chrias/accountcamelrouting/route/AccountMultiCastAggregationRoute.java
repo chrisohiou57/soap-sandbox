@@ -37,6 +37,7 @@ public class AccountMultiCastAggregationRoute extends RouteBuilder {
         TODO how can I unit test the object mapping?
         */
         from("cxf:bean:cxfAccountService?dataFormat=POJO")
+            .to("micrometer:counter:camelAccountApiCounter")
             .multicast(new AccountAggregationStrategy()).parallelProcessing()
                 .to("direct:callRetailAccountService")
                 .to("direct:callInvestmentAccountService")

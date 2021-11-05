@@ -172,3 +172,12 @@ data:
          receivers: [zipkin]
          exporters: [otlp]
 EOF
+
+
+
+<!-- Up Next -->
+https://danielblancocuadrado.medium.com/apache-camel-create-your-own-metric-with-micrometer-b10d2db09b4f
+https://grafana.com/blog/2019/07/25/lokis-path-to-ga-adding-structure-to-unstructured-logs/
+https://medium.com/geekculture/pushing-logs-to-loki-without-using-promtail-fc31dfdde3c6
+
+https://github.com/mnadeem/boot-opentelemetry-tempo
