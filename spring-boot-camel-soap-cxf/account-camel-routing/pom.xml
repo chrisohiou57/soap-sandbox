@@ -68,14 +68,16 @@
 			<artifactId>camel-bean</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.chrias</groupId>
-			<artifactId>account-soap-model</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-artemis</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.chrias</groupId>
-			<artifactId>account-soap-ssl</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-jms</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-jackson</artifactId>
 		</dependency>
 
 		<!-- https://issues.apache.org/jira/browse/CXF-8457 -->
@@ -96,6 +98,18 @@
 		<dependency>
 			<groupId>org.apache.camel.springboot</groupId>
 			<artifactId>camel-opentelemetry-starter</artifactId>
+		</dependency>
+
+		<!-- Custom Dependencies -->
+		<dependency>
+			<groupId>com.chrias</groupId>
+			<artifactId>account-soap-model</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.chrias</groupId>
+			<artifactId>account-soap-ssl</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>

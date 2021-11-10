@@ -2,7 +2,7 @@ package com.chrias.accountsoapservice.config;
 
 import javax.xml.ws.Endpoint;
 
-import com.chrias.accountsoapservice.service.RetailAccountRetrievalService;
+import com.chrias.accountsoapservice.service.RetailAccountService;
 import com.chrias.accountsoapservice.webservice.RetailAccountWebService;
 
 import org.apache.cxf.Bus;
@@ -29,12 +29,12 @@ public class CxfConfigRetail {
     }
 
     @Bean
-    public RetailAccountRetrievalService retailAccountRetrievalService() {
-        return new RetailAccountRetrievalService();
+    public RetailAccountService retailAccountRetrievalService() {
+        return new RetailAccountService();
     }
 
     @Bean
-    public RetailAccountWebService retailAccountWebService(RetailAccountRetrievalService retailAccountRetrievalService) {
+    public RetailAccountWebService retailAccountWebService(RetailAccountService retailAccountRetrievalService) {
         return new RetailAccountWebService(retailAccountRetrievalService);
     }
     

@@ -2,7 +2,7 @@ package com.chrias.accountsoapservice.config;
 
 import javax.xml.ws.Endpoint;
 
-import com.chrias.accountsoapservice.service.InvestmentAccountRetrievalService;
+import com.chrias.accountsoapservice.service.InvestmentAccountService;
 import com.chrias.accountsoapservice.webservice.InvestmentAccountWebService;
 
 import org.apache.cxf.Bus;
@@ -29,12 +29,12 @@ public class CxfConfigInvestment {
     }
 
     @Bean
-    public InvestmentAccountRetrievalService investmentAccountRetrievalService() {
-        return new InvestmentAccountRetrievalService();
+    public InvestmentAccountService investmentAccountRetrievalService() {
+        return new InvestmentAccountService();
     }
 
     @Bean
-    public InvestmentAccountWebService retailAccountWebService(InvestmentAccountRetrievalService investmentAccountRetrievalService) {
+    public InvestmentAccountWebService retailAccountWebService(InvestmentAccountService investmentAccountRetrievalService) {
         return new InvestmentAccountWebService(investmentAccountRetrievalService);
     }
     

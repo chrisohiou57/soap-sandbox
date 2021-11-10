@@ -39,5 +39,21 @@
             </xs:sequence>
         </xs:complexType>
     </xs:element>
+
+    <xs:element name="createAccountRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="account" type="tns:InvestmentAccount" minOccurs="1" maxOccurs="1" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="createAccountResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="account" type="tns:InvestmentAccount" minOccurs="1" maxOccurs="1" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
     
 </xs:schema>

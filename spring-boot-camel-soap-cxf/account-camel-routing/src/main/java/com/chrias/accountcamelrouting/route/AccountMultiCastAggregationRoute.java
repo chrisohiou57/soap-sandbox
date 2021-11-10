@@ -35,9 +35,10 @@ public class AccountMultiCastAggregationRoute extends RouteBuilder {
         /*
         TODO add fail on exception. It tripped me up when I was creating the investment AccountType incorrectly. It was still making it to the aggregator, but not with the body I was expecting.
         TODO how can I unit test the object mapping?
+        TODO should there be a counter for invocation and succesful calls?
         */
-        from("cxf:bean:cxfAccountService?dataFormat=POJO")
-            .to("micrometer:counter:camelAccountApiCounter")
+        from("cxf:bean:cxfGetAccountService?dataFormat=POJO")
+            .to("micrometer:counter:camelGetAccountApiCounter")
             .multicast(new AccountAggregationStrategy()).parallelProcessing()
                 .to("direct:callRetailAccountService")
                 .to("direct:callInvestmentAccountService")

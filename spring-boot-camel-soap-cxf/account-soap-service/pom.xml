@@ -48,6 +48,9 @@
 			<artifactId>opentelemetry-jaxws-2.0-cxf-3.0</artifactId>
 			<version>1.7.1-alpha</version>
 		</dependency>
+		
+
+		<!-- Custom dependencies -->
 		<dependency>
 			<groupId>com.chrias</groupId>
 			<artifactId>account-soap-model</artifactId>

@@ -13,16 +13,29 @@
             <xs:import namespace="http://www.chrias.com/investmentaccount" schemaLocation="investment-account.xsd" />
         </xs:schema>
     </wsdl:types>
+
     <wsdl:message name="getAccountsRequest">
         <wsdl:part element="tns:getAccountsRequest" name="getAccountsRequest"></wsdl:part>
     </wsdl:message>
     <wsdl:message name="getAccountsResponse">
         <wsdl:part element="tns:getAccountsResponse" name="getAccountsResponse"></wsdl:part>
     </wsdl:message>
+
+    <wsdl:message name="createAccountRequest">
+        <wsdl:part element="tns:createAccountRequest" name="createAccountRequest"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="createAccountResponse">
+        <wsdl:part element="tns:createAccountResponse" name="createAccountResponse"></wsdl:part>
+    </wsdl:message>
+
     <wsdl:portType name="InvestmentAccountsPort">
         <wsdl:operation name="getAccounts">
             <wsdl:input message="tns:getAccountsRequest" name="getAccountsRequest"></wsdl:input>
             <wsdl:output message="tns:getAccountsResponse" name="getAccountsResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="createAccount">
+            <wsdl:input message="tns:createAccountRequest" name="createAccountRequest"></wsdl:input>
+            <wsdl:output message="tns:createAccountResponse" name="createAccountResponse"></wsdl:output>
         </wsdl:operation>
     </wsdl:portType>
     <wsdl:binding name="InvestmentAccountsPortSoap11" type="tns:InvestmentAccountsPort">
@@ -33,6 +46,15 @@
                 <soap:body use="literal" />
             </wsdl:input>
             <wsdl:output name="getAccountsResponse">
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="createAccount">
+            <soap:operation soapAction="" />
+            <wsdl:input name="createAccountRequest">
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output name="createAccountResponse">
                 <soap:body use="literal" />
             </wsdl:output>
         </wsdl:operation>
