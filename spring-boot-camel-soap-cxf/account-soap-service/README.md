@@ -124,6 +124,9 @@ After installing the Loki stack logs are automagically getting sent to Loki and 
         - name: OTEL_RESOURCE_ATTRIBUTES
           value: service.name=camel-account-api
 
+<!-------------------------------------------------------------->
+<!-------------- INSTALL OBSERVABILITY COMPONENTS -------------->
+<!-------------------------------------------------------------->
 <!-- Add the Grafana Helm repo -->
 helm repo add grafana https://grafana.github.io/helm-charts
 helm repo update
@@ -137,7 +140,13 @@ helm upgrade --install loki grafana/loki-stack -f .\loki-stack-values.yaml
 <!-- Install Grafana with predefined data sources -->
 helm install grafana grafana/grafana -f .\grafana-values.yaml
 
-<!-- Deploy SOAP services -->
+
+
+
+
+<!-------------------------------------------------------------->
+<!-------------------- DEPLOY SOAP SERVICES -------------------->
+<!-------------------------------------------------------------->
 kubectl apply -f acct-svc-retail-deployment.yaml
 kubectl apply -f acct-svc-investment-deployment.yaml
 kubectl apply -f acct-svc-camel-deployment.yaml
@@ -176,8 +185,11 @@ EOF
 
 
 <!-- Up Next -->
-https://danielblancocuadrado.medium.com/apache-camel-create-your-own-metric-with-micrometer-b10d2db09b4f
-https://grafana.com/blog/2019/07/25/lokis-path-to-ga-adding-structure-to-unstructured-logs/
-https://medium.com/geekculture/pushing-logs-to-loki-without-using-promtail-fc31dfdde3c6
+https://github.com/docker/for-win/issues/10038
 
-https://github.com/mnadeem/boot-opentelemetry-tempo
+
+
+
+
+<!-- Counter Metric Prometheus query -->
+camelAccountApiCounter_total{application="camel-account-api"}
