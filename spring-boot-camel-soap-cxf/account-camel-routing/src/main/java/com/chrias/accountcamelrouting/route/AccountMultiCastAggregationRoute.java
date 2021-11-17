@@ -8,7 +8,6 @@ import com.chrias.accountcamelrouting.processor.RetailAccountResponseMessageProc
 
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.cxf.common.message.CxfConstants;
-import org.apache.camel.opentelemetry.OpenTelemetryTracer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -29,9 +28,6 @@ public class AccountMultiCastAggregationRoute extends RouteBuilder {
 
     @Override
     public void configure() throws Exception {
-        OpenTelemetryTracer tracer = new OpenTelemetryTracer();
-        tracer.init(this.getCamelContext());
-        
         /*
         TODO add fail on exception. It tripped me up when I was creating the investment AccountType incorrectly. It was still making it to the aggregator, but not with the body I was expecting.
         TODO how can I unit test the object mapping?

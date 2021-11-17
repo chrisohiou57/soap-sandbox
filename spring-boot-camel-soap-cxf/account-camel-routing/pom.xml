@@ -100,6 +100,16 @@
 			<artifactId>camel-opentelemetry-starter</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>io.hawt</groupId>
+			<artifactId>hawtio-springboot</artifactId>
+			<version>2.14.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-management</artifactId>
+		</dependency>
+
 		<!-- Custom Dependencies -->
 		<dependency>
 			<groupId>com.chrias</groupId>

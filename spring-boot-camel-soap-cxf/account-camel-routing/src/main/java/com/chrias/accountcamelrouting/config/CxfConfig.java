@@ -75,23 +75,5 @@ public class CxfConfig {
         endpoint.setServiceClass("com.chrias.soapmodel.investment.InvestmentAccountsPort");
         return endpoint;
     }
-
-    // @Bean
-    // public CxfEndpoint retailCreateAccountServiceBackend() throws ClassNotFoundException {
-    //     log.debug("Configuring retail account creation SOAP API backend with uri: {}://{}:{}", apiUriScheme, retailSoapApiHost, retailSoapApiPort);
-    //     CxfEndpoint endpoint = new CxfEndpoint();
-    //     endpoint.setAddress(String.format("%s://%s:%s/retail/account", apiUriScheme, retailSoapApiHost, retailSoapApiPort));
-    //     endpoint.setServiceClass("com.chrias.soapmodel.retail.RetailAccountsPort");
-    //     return endpoint;
-    // }
-
-    // @Bean
-    // public CxfEndpoint investmentCreateAccountServiceBackend() throws ClassNotFoundException {
-    //     log.debug("Configuring investment account creation SOAP API backend with uri: {}://{}:{}", apiUriScheme, investmentSoapApiHost, investmentSoapApiPort);
-    //     CxfEndpoint endpoint = new CxfEndpoint();
-    //     endpoint.setAddress(String.format("%s://%s:%s/investment/account", apiUriScheme, investmentSoapApiHost, investmentSoapApiPort));
-    //     endpoint.setServiceClass("com.chrias.soapmodel.investment.InvestmentAccountsPort");
-    //     return endpoint;
-    // }
     
 }

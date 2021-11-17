@@ -75,6 +75,7 @@ kubectl expose deployment retail-account-svc --name=nodeport --port=8080 --targe
 kubectl apply -f acct-svc-retail-deployment.yaml
 kubectl apply -f acct-svc-investment-deployment.yaml
 kubectl apply -f acct-svc-camel-deployment.yaml
+kubectl apply -f acct-svc-subscriber-deployment.yaml
 kubectl apply -f opentelemetry-collector-deployment.yaml
 
 <!-- See or remove everything -->
@@ -100,6 +101,9 @@ kubectl exec camel-account-api-6f65bf8967-754jc  -- printenv | grep SERVICE
 java -javaagent:./src/main/resources/telemetry/opentelemetry-javaagent-all.jar -jar .\target\account-camel-routing-1.0.0-SNAPSHOT.jar --server.port=8045 --api.uri.scheme=http --investment.acct.api.svc.service.host=localhost --investment.acct.api.svc.service.port=8044 --retail.account.api.svc.service.host=localhost --retail.account.api.svc.service.port=8043
 
 java -javaagent:./src/main/resources/telemetry/opentelemetry-javaagent-all.jar -jar .\target\account-soap-service-1.0.0-SNAPSHOT.jar --spring.profiles.active=retail --server.port=8043
+
+java -javaagent:./src/main/resources/telemetry/opentelemetry-javaagent-all.jar -jar .\target\account-event-subscriber-0.0.1-SNAPSHOT.jar
+
 
 <!-- Most Basic Loki Grafana Query -->
 {app="camel-account-api",namespace="soapdemo"}
@@ -193,3 +197,7 @@ https://github.com/docker/for-win/issues/10038
 
 <!-- Counter Metric Prometheus query -->
 camelAccountApiCounter_total{application="camel-account-api"}
+
+<!-- Start local Artemis environment -->
+cd C:\dev\apache-artemis-2.19.0\bin
+C:\usr\soapdemo\bin\artemis.cmd run

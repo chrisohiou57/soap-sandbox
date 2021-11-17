@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: account-subscriber
+  name: account-subscriber
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: account-subscriber
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: account-subscriber
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+        prometheus.io/path: "/actuator/prometheus"
+    spec:
+      containers:
+      - image: chrias/account-event-subscriber
+        imagePullPolicy: Never
+        name: account-event-subscriber
+        resources: {}
+        env:
+        - name: SPRING_ARTEMIS_BROKERURL
+          value: tcp://10.1.1.237:61616
+        - name: OTEL_RESOURCE_ATTRIBUTES
+          value: service.name=account-event-subscriber
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: http://$(TEMPO_SERVICE_HOST):$(TEMPO_PORT_55680_TCP_PORT)
+        - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+          value: http://$(TEMPO_SERVICE_HOST):$(TEMPO_PORT_55680_TCP_PORT)
+        - name: OTEL_EXPORTER_OTLP_METRICS_ENDPOINT
+          value: http://$(TEMPO_SERVICE_HOST):$(TEMPO_PORT_55680_TCP_PORT)
+        - name: K8S_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace

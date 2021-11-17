@@ -15,6 +15,13 @@
 		{
 			"name": "account-camel-routing",
 			"path": "account-camel-routing"
+		},
+		{
+			"name": "account-event-subscriber",
+			"path": "account-event-subscriber"
+		},
+		{
+			"path": "k8s"
 		}
 	],
 	"settings": {

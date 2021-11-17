@@ -10,9 +10,6 @@ import com.chrias.accountcamelrouting.processor.RetailCreateAccountResponseMessa
 import com.chrias.camelsoapmodel.account.AccountType;
 import com.chrias.camelsoapmodel.account.CreateAccountResponse;
 
-import org.apache.camel.Exchange;
-import org.apache.camel.Predicate;
-import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.cxf.common.message.CxfConstants;
 import org.apache.cxf.message.MessageContentsList;
@@ -25,6 +22,10 @@ public class AccountCreationRoute extends RouteBuilder {
     @Value("${jms.queue.account.creation}")
     private String accountCreationQueue;
 
+    private static List<AccountType> retailAccountTypes = Arrays.asList(
+        AccountType.CHECKING, AccountType.SAVINGS, AccountType.CERTIFICATE_OF_DEPOSIT
+    );
+
     @Override
     public void configure() throws Exception {
         from("cxf:bean:cxfCreateAccountService?dataFormat=POJO")            
@@ -34,21 +35,13 @@ public class AccountCreationRoute extends RouteBuilder {
             .onCompletion().onFailureOnly()
                 .to("micrometer:counter:camelcreateAccountApiFailureCounter")
             .end()
+            // Here we begin the normal route. The EIP above executes depending on the result below.
             .to("micrometer:counter:camelcreateAccountApiCounter")
             .choice()
-                .when(new Predicate() {
-
-                    List<AccountType> retailAccountTypes = Arrays.asList(
-                        AccountType.CHECKING, AccountType.SAVINGS, AccountType.CERTIFICATE_OF_DEPOSIT
-                    );
-
-                    @Override
-                    public boolean matches(Exchange exchange) {
-                        MessageContentsList payload = exchange.getIn().getBody(MessageContentsList.class);
-                        AccountType accountType = ((com.chrias.camelsoapmodel.account.CreateAccountRequest) payload.get(0)).getAccount().getAccountType();
-                        return retailAccountTypes.contains(accountType);
-                    }
-                    
+                .when(exchange -> {
+                    MessageContentsList payload = exchange.getIn().getBody(MessageContentsList.class);
+                    AccountType accountType = ((com.chrias.camelsoapmodel.account.CreateAccountRequest) payload.get(0)).getAccount().getAccountType();
+                    return retailAccountTypes.contains(accountType);
                 })
                     .to("direct:callRetailCreateAccountService")
                 .otherwise()
@@ -79,18 +72,13 @@ public class AccountCreationRoute extends RouteBuilder {
             .end();
 
         from("direct:publishAccountCreation")
-            .process(new Processor() {
-
-                @Override
-                public void process(Exchange exchange) throws Exception {
-                    CreateAccountResponse response = (CreateAccountResponse) exchange.getIn().getBody();
-                    exchange.getMessage().setBody(response.getAccount());
-                }
-                
+            .process(exchange -> {
+                CreateAccountResponse response = (CreateAccountResponse) exchange.getIn().getBody();
+                exchange.getMessage().setBody(response.getAccount());
             })
             .marshal().json()
             .log("Publishing account creation message in JSON format: ${body}")
-            .to("jms:" + accountCreationQueue)
+            .to(String.format("jms:%s?jmsMessageType=Text", accountCreationQueue))
             .end();
     }
     
