@@ -98,7 +98,9 @@ kubectl exec --stdin --tty pod_name -- sh
 kubectl exec camel-account-api-6f65bf8967-754jc  -- printenv | grep SERVICE
 
 
-java -javaagent:./src/main/resources/telemetry/opentelemetry-javaagent-all.jar -jar .\target\account-camel-routing-1.0.0-SNAPSHOT.jar --server.port=8045 --api.uri.scheme=http --investment.acct.api.svc.service.host=localhost --investment.acct.api.svc.service.port=8044 --retail.account.api.svc.service.host=localhost --retail.account.api.svc.service.port=8043
+java -javaagent:"C:\dev\personal\vscode\otel-extensions\build\libs\opentelemetry-javaagent.jar" -Dotel.javaagent.extensions="C:\dev\personal\vscode\otel-extensions\build\libs\otel-extensions-1.0.0-SNAPSHOT-all.jar" -jar ./target/account-camel-routing-1.0.0-SNAPSHOT.jar --server.port=8045 --api.uri.scheme=http --investment.acct.api.svc.service.host=localhost --investment.acct.api.svc.service.port=8044 --retail.account.api.svc.service.host=localhost --retail.account.api.svc.service.port=8043
+
+java -javaagent:./src/main/resources/telemetry/opentelemetry-javaagent-all.jar -Dotel.javaagent.extensions="C:\dev\personal\vscode\otel-extensions\build\libs\otel-extensions-1.0.0-SNAPSHOT-all.jar" -jar ./target/account-camel-routing-1.0.0-SNAPSHOT.jar --server.port=8045 --api.uri.scheme=http --investment.acct.api.svc.service.host=localhost --investment.acct.api.svc.service.port=8044 --retail.account.api.svc.service.host=localhost --retail.account.api.svc.service.port=8043
 
 java -javaagent:./src/main/resources/telemetry/opentelemetry-javaagent-all.jar -jar .\target\account-soap-service-1.0.0-SNAPSHOT.jar --spring.profiles.active=retail --server.port=8043
 

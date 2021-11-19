@@ -29,7 +29,7 @@ spec:
           value: http
         # TODO need to figure out to configure this. The service that's being created by the operator has to CLUSTER-IP for some reason
         - name: SPRING_ARTEMIS_BROKERURL
-          value: tcp://10.1.1.236:61616
+          value: tcp://10.1.2.28:61616
         - name: OTEL_RESOURCE_ATTRIBUTES
           value: service.name=camel-account-api
         # - name: OTEL_EXPORTER_OTLP_ENDPOINT
@@ -44,7 +44,12 @@ spec:
           value: http://$(TEMPO_SERVICE_HOST):$(TEMPO_PORT_55680_TCP_PORT)
         - name: OTEL_EXPORTER_OTLP_METRICS_ENDPOINT
           value: http://$(TEMPO_SERVICE_HOST):$(TEMPO_PORT_55680_TCP_PORT)
-status: {}
+        - name: K8S_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: LOGGING_LEVEL_IO_OPENTELEMETRY
+          value: DEBUG
 ---
 apiVersion: v1
 kind: Service
