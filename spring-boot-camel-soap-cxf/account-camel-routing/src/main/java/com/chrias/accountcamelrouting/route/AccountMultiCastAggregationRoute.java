@@ -5,6 +5,7 @@ import com.chrias.accountcamelrouting.bean.InvestmentAccountRequestMessageConver
 import com.chrias.accountcamelrouting.bean.RetailAccountResponseMessageConverter;
 import com.chrias.accountcamelrouting.processor.RetailAccountRequestMessageProcessor;
 import com.chrias.accountcamelrouting.processor.RetailAccountResponseMessageProcessor;
+import com.chrias.accountcamelrouting.security.WsSecuritySoapHeaderRemovalProcessor;
 
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.cxf.common.message.CxfConstants;
@@ -17,15 +18,6 @@ public class AccountMultiCastAggregationRoute extends RouteBuilder {
 
     Logger log = LoggerFactory.getLogger(AccountMultiCastAggregationRoute.class);
 
-    // TODO is there any benefit to injecting these? Testing?
-    // private RetailAccountRequestMessageProcessor retailAccountRequestMessageProcessor;
-    // private RetailAccountResponseMessageProcessor retailAccountResponseMessageProcessor;
-
-    // public AccountMultiCastAggregationRoute(RetailAccountRequestMessageProcessor retailAccountRequestMessageProcessor, RetailAccountResponseMessageProcessor retailAccountResponseMessageProcessor) {
-    //     this.retailAccountRequestMessageProcessor = retailAccountRequestMessageProcessor;
-    //     this.retailAccountResponseMessageProcessor = retailAccountResponseMessageProcessor;
-    // }
-
     @Override
     public void configure() throws Exception {
         /*
@@ -35,6 +27,7 @@ public class AccountMultiCastAggregationRoute extends RouteBuilder {
         */
         from("cxf:bean:cxfGetAccountService?dataFormat=POJO")
             .to("micrometer:counter:camelGetAccountApiCounter")
+            .process(new WsSecuritySoapHeaderRemovalProcessor())
             .multicast(new AccountAggregationStrategy()).parallelProcessing()
                 .to("direct:callRetailAccountService")
                 .to("direct:callInvestmentAccountService")

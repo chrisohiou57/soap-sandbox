@@ -1,8 +1,15 @@
 package com.chrias.accountcamelrouting.config;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.chrias.accountcamelrouting.security.PasswordCallback;
+
 import org.apache.camel.component.cxf.CxfEndpoint;
 import org.apache.cxf.bus.spring.SpringBus;
 import org.apache.cxf.transport.servlet.CXFServlet;
+import org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor;
+import org.apache.wss4j.common.ConfigurationConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,11 +48,12 @@ public class CxfConfig {
     }
 
     @Bean
-    public CxfEndpoint cxfGetAccountService() throws ClassNotFoundException {
+    public CxfEndpoint cxfGetAccountService(WSS4JInInterceptor usernamePasswordInterceptor) throws ClassNotFoundException {
         CxfEndpoint endpoint = new CxfEndpoint();
         endpoint.setAddress("/getAccounts");
         endpoint.setServiceClass("com.chrias.camelsoapmodel.account.AccountsPort");
         endpoint.setDefaultOperationName("getAccounts");
+        endpoint.getInInterceptors().add(usernamePasswordInterceptor);
         return endpoint;
     }
 
@@ -74,6 +82,15 @@ public class CxfConfig {
         endpoint.setAddress(String.format("%s://%s:%s/investment/account", apiUriScheme, investmentSoapApiHost, investmentSoapApiPort));
         endpoint.setServiceClass("com.chrias.soapmodel.investment.InvestmentAccountsPort");
         return endpoint;
+    }
+
+    @Bean
+    public WSS4JInInterceptor usernamePasswordInterceptor(PasswordCallback passwordCallback) {
+        // TODO play with PasswordDigest
+        Map<String, Object> props = new HashMap<>();
+        props.put(ConfigurationConstants.ACTION, ConfigurationConstants.USERNAME_TOKEN);
+        props.put(ConfigurationConstants.PW_CALLBACK_REF, passwordCallback);
+        return new WSS4JInInterceptor(props);
     }
     
 }

@@ -110,6 +110,11 @@
 			<artifactId>camel-management</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-ws-security</artifactId>
+		</dependency>
+
 		<!-- Custom Dependencies -->
 		<dependency>
 			<groupId>com.chrias</groupId>
