@@ -38,6 +38,7 @@ spec:
         #   value: http://$(OPENTELEMETRY_COLLECTOR_SVC_SERVICE_HOST):$(OPENTELEMETRY_COLLECTOR_SVC_SERVICE_PORT)
         # - name: OTEL_EXPORTER_OTLP_METRICS_ENDPOINT
         #   value: http://$(OPENTELEMETRY_COLLECTOR_SVC_SERVICE_HOST):$(OPENTELEMETRY_COLLECTOR_SVC_SERVICE_PORT)
+        # TODO I'm not really sending any metrics to tempo via the OTEL API. I'm using Micrometer. Prove that everything still works without the METRICS_ENDPOINT.
         - name: OTEL_EXPORTER_OTLP_ENDPOINT
           value: http://$(TEMPO_SERVICE_HOST):$(TEMPO_PORT_55680_TCP_PORT)
         - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
