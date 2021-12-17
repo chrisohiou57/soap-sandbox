@@ -19,10 +19,10 @@ helm repo update
 helm upgrade --install tempo grafana/tempo
 
 <!-- Install the loki-stack -->
-helm upgrade --install loki grafana/loki-stack -f .\loki-stack-values.yaml
+helm upgrade --install loki grafana/loki-stack -f ./loki-stack-values.yaml
 
 <!-- Install Grafana with predefined data sources -->
-helm install grafana grafana/grafana -f .\grafana-values.yaml
+helm install grafana grafana/grafana -f ./grafana-values.yaml
 
 <!-- Deploy SOAP services -->
 kubectl apply -f acct-svc-retail-deployment.yaml

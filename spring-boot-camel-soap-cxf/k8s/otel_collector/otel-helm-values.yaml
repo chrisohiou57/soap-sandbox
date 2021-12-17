@@ -1,0 +1,30 @@
+agentCollector:
+  containerLogs:
+    enabled: true
+  configOverride:
+    exporters:
+      # logging:
+      #   logLevel: debug
+      loki:
+        endpoint: "http://loki.soapdemo.svc.cluster.local:3100/loki/api/v1/push"
+        labels:
+          attributes:
+            file.name: "filename"
+          resource:
+            # container.name: "container_name"
+            job: "exporter_poc"
+    service:
+      extensions:
+        zpages:
+          endpoint: 0.0.0.0:55679
+      pipelines:
+        logs:
+          exporters:
+            - loki
+      # telemetry:
+      #   logs:
+      #     level: "debug"
+image:
+  repository: otel/opentelemetry-collector-contrib
+command:
+  name: otelcontribcol

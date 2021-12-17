@@ -1,0 +1,50 @@
+datasources:
+ datasources.yaml:
+   apiVersion: 1
+   datasources:
+     - name: Tempo
+       type: tempo
+       access: browser
+       orgId: 1
+       uid: tempo
+       url: http://$TEMPO_SERVICE_HOST:$TEMPO_SERVICE_PORT
+       isDefault: true
+       editable: true
+       jsonData:
+        tracesToLogs:
+          datasourceUid: loki
+          filterBySpanID: true
+          filterByTraceID: true
+          tags:
+            - namespace
+     - name: Loki
+       type: loki
+       access: browser
+       orgId: 1
+       uid: loki
+       url: http://$LOKI_SERVICE_HOST:$LOKI_SERVICE_PORT
+       isDefault: false
+       editable: true
+       jsonData:
+         derivedFields:
+           - datasourceName: Tempo
+             matcherRegex: "traceId=(\\w+)"
+             name: TraceId
+             url: "$${__value.raw}"
+             datasourceUid: tempo
+     - name: Prometheus
+       type: prometheus
+       access: "proxy"
+       orgId: 1
+       uid: prometheus
+       url: http://$LOKI_PROMETHEUS_SERVER_SERVICE_HOST:$LOKI_PROMETHEUS_SERVER_SERVICE_PORT
+       isDefault: false
+       editable: true
+       jsonData:
+         httpMethod: POST
+env: 
+ JAEGER_AGENT_PORT: 6831
+adminUser: admin
+adminPassword: password
+service:
+ type: NodePort
