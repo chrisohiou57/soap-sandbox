@@ -1,75 +1,45 @@
-#### Create certificates and keystore/trustore for mutual SSL handshakes
+# Overview
+TODO describe what it do
 
-##### Create self signed certificate for retail SOAP webservice app:
-keytool -genkeypair -alias retail-app -keyalg RSA -keysize 2048 -storetype PKCS12 -keystore retail-app.jks -dname "CN=localhost, OU=Retail, O=Chrias Corp, L=Columbus, S=Ohio, C=US" -storepass retailpw -keypass retailpw -validity 3650
-
-##### Create public certificate from retail app certificate:
-keytool -export -alias retail-app -file retail-app.crt -keystore retail-app.jks
-
-##### Create self signed certificate for investments SOAP webservice app:
-keytool -genkeypair -alias investments-app -keyalg RSA -keysize 2048 -storetype PKCS12 -keystore investments-app.jks -dname "CN=localhost, OU=Investments, O=Chrias Corp, L=Columbus, S=Ohio, C=US" -storepass investmentspw -keypass investmentspw -validity 3650
-
-##### Create public certificate from investments app certificate:
-keytool -export -alias investments-app -file investments-app.crt -keystore investments-app.jks
-
-##### Create self signed certificate for Camel app:
-keytool -genkeypair -alias camel-app -keyalg RSA -keysize 2048 -storetype PKCS12 -keystore camel-app.jks -dname "CN=localhost, OU=Middleware, O=Chrias Corp, L=Columbus, S=Ohio, C=US" -storepass camelpw -keypass camelpw -validity 3650
-
-##### Create public certificate from Camel app certificate:
-keytool -export -alias camel-app -file camel-app.crt -keystore camel-app.jks
-
-##### Create self signed certificate for client app:
-keytool -genkeypair -alias client-app -keyalg RSA -keysize 2048 -storetype PKCS12 -keystore client-app.jks -dname "CN=localhost, OU=Online Banking, O=Chrias Corp, L=Columbus, S=Ohio, C=US" -storepass clientpw -keypass clientpw -validity 3650
-
-##### Create public certificate from client app certificate:
-keytool -export -alias client-app -file client-app.crt -keystore client-app.jks
-
-#### Import certaificates on both sides for mutual SSL handshakes
-
-##### Import retail-app certificate into camel-app and client-app keystore:
-keytool -import -trustcacerts -alias retail-app -file retail-app.crt -keystore camel-app.jks
-keytool -import -trustcacerts -alias retail-app -file retail-app.crt -keystore client-app.jks
-
-##### Import camel-app and client-app certificate into retail-app keystore:
-keytool -import -trustcacerts -alias camel-app -file camel-app.crt -keystore retail-app.jks
-keytool -import -trustcacerts -alias client-app -file client-app.crt -keystore retail-app.jks
-
-##### Import investment-app certificate into camel-app and client-app keystore:
-keytool -import -trustcacerts -alias investment-app -file investment-app.crt -keystore camel-app.jks
-keytool -import -trustcacerts -alias investment-app -file investment-app.crt -keystore client-app.jks
-
-##### Import camel-app and client-app certificate into investment-app keystore:
-keytool -import -trustcacerts -alias camel-app -file camel-app.crt -keystore investment-app.jks
-keytool -import -trustcacerts -alias client-app -file client-app.crt -keystore investment-app.jks
-
-##### Import camel-app certificate into client-app keystore:
-keytool -import -trustcacerts -alias camel-app -file camel-app.crt -keystore client-app.jks
-
-##### Import client-app certificate into camel-app keystore:
-keytool -import -trustcacerts -alias client-app -file client-app.crt -keystore camel-app.jks
-
-mvn clean install -DskipTests
-
-docker image ls | grep chrias
-docker ps | grep chrias
-docker kill ${CONTAINER_ID}
-
+## Building the application
+To build the project you will need Maven installed, or you can use the Maven wrapper checked in with the project. The command below will generate the Fat JAR.
+```
+mvnw clean install
+```
+Once you have generated the Fat JAR you can build a container image using the Dockerfile in the project. This obviously uses my personal Docker Hub account. You will want to change it to match your account details for whatever image repository you use. This command will use the tag <b><i>latest</i></b> by default.
+```
 docker build -t chrias/account-soap-service .
-docker run -p 8043:8043 -e SPRING_PROFILES_ACTIVE=retail chrias/account-soap-service
-docker run -p 8043:8043 -e SPRING_PROFILES_ACTIVE=investment chrias/account-soap-service
+```
 
-docker build -t chrias/camel-account-soap-service .
-docker run -p 8043:8043 -e INVESTMENT_SOAP_API_URI=https://10.105.78.35:8043/investment/account -e RETAIL_SOAP_API_URI=https://10.105.78.34:8043/retail/account chrias/camel-account-soap-service
-docker run -p 8043:8043 chrias/camel-account-soap-service
+## Running the application
+### Spring Profiles
+The application is meant to run under one of two Spring Profiles: <b>retail</b> or <b>investment</b>. See the `application-retail.properties` and `applciation-investment.properties` files to see profile specific configs. You will also notice that certain classes are annotated with `@Profile("retail)"` or `@Profile("investment)"` to load the appropriate classes to simulate different account API back-ends.
+
+An additional <b>mTLS</b> profile can be added if you have followed the steps below to generate SSL certs for mutual authentication (mTLS). This will set up the appropriate keystore and truststore components for mTLS. See `application-mTLS.properties` file for more details.
+
+### Application Properties
+The application expects several properties to run. These are standard Spring Boot properties.
+- <b>spring.profiles.active</b> Valid values are `retail` or `investment`.
+- <b>server.port</b> Since the app is expected to run multiple instances under two different profiles you want to be clear about which port each profile is running on.
+
+### Running in an IDE
+The project includes a `launch.json` file in the `.vscode` directory that can be used in VS Code. The <b>Spring Boot Tools</b> and <b>Language Support for Java</b> should also be installed. You can follow the [documentation](https://code.visualstudio.com/docs/java/java-spring-boot) to get started with that. You can also easily configure similar run/debug configs in another IDE like IntelliJ by referencing the details in `launch.json`.
+
+### Running the Fat JAR
+You can execute the Fat JAR by following the Maven build instructions above and running the following command.
+```
+java -jar ./target/account-soap-service-1.0.0.jar --spring.profiles.active=retail --server.port=8043
+```
+
+### Running in Containers
+There is a Dockerfile in the root of this project that you can use to build an image. See further instruction above. In the k8s directory you will find instructions and K8s YAML files that can be used to deploy to a local K8s cluster like [minikube](https://minikube.sigs.k8s.io/docs/) or K8s bundled in Docker Desktop. This project and its documentation favors K8s over Docker Compose.
+
+This project uses [OpenTelemetry](https://opentelemetry.io/) (otel) for distributed tracing. These docs assume that you are running the app in Kubernetes (K8s) if you are demonstrating the otel functionality. It would be way more trouble than it's worth to configure all of the necessary components outside of K8s, if it's even possible.
+
+#### NOTE
+It is not recommended to use the <b>mTLS</b> Spring Profile when running in K8s. A much better way to achieve mTLS in a K8s cluster is using tooling such as [Linkerd](https://linkerd.io/2.9/tasks/securing-your-service/). To set up mTLS for public traffic coming into your K8s cluster you can terminate mTLS at the load balancer fronting your K8s Ingress. So, for running things in a local K8s cluster don't worry about it.
 
 
-
-kubectl create deployment retail-account-svc --image=chrias/account-soap-service --dry-run=client -o=yaml > retail-acct-svc-deployment.yaml
-echo --- >> retail-acct-svc-deployment.yaml
-<!-- kubectl create service nodeport retail-account-svc-nodeport --tcp=8080:8080 --dry-run=client -o=yaml >> retail-acct-svc-deployment.yaml -->
-
-<!-- This is what I used to create the NodePort service. I got the yaml by running: kubectl get service retail-account-svc -o yaml -->
-kubectl expose deployment retail-account-svc --name=nodeport --port=8080 --target-port=8080 --type=NodePort
 
 <!-- NOTE that I had to add imagePullPolicy: Never to pull from my local repo -->
 kubectl apply -f acct-svc-retail-deployment.yaml
@@ -97,14 +67,6 @@ kubectl exec --stdin --tty pod_name -- sh
 <!-- View environment variables -->
 kubectl exec camel-account-api-6f65bf8967-754jc  -- printenv | grep SERVICE
 
-
-java -javaagent:"C:\dev\personal\vscode\otel-extensions\build\libs\opentelemetry-javaagent.jar" -Dotel.javaagent.extensions="C:\dev\personal\vscode\otel-extensions\build\libs\otel-extensions-1.0.0-SNAPSHOT-all.jar" -jar ./target/account-camel-routing-1.0.0-SNAPSHOT.jar --server.port=8045 --api.uri.scheme=http --investment.acct.api.svc.service.host=localhost --investment.acct.api.svc.service.port=8044 --retail.account.api.svc.service.host=localhost --retail.account.api.svc.service.port=8043
-
-java -javaagent:./src/main/resources/telemetry/opentelemetry-javaagent-all.jar -Dotel.javaagent.extensions="C:\dev\personal\vscode\otel-extensions\build\libs\otel-extensions-1.0.0-SNAPSHOT-all.jar" -jar ./target/account-camel-routing-1.0.0-SNAPSHOT.jar --server.port=8045 --api.uri.scheme=http --investment.acct.api.svc.service.host=localhost --investment.acct.api.svc.service.port=8044 --retail.account.api.svc.service.host=localhost --retail.account.api.svc.service.port=8043
-
-java -javaagent:./src/main/resources/telemetry/opentelemetry-javaagent-all.jar -jar .\target\account-soap-service-1.0.0-SNAPSHOT.jar --spring.profiles.active=retail --server.port=8043
-
-java -javaagent:./src/main/resources/telemetry/opentelemetry-javaagent-all.jar -jar .\target\account-event-subscriber-0.0.1-SNAPSHOT.jar
 
 
 <!-- Most Basic Loki Grafana Query -->

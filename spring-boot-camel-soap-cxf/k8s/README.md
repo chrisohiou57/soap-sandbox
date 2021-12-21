@@ -1,3 +1,59 @@
+# Overview
+Here you will find instructions for deploying the observability stack and application components to a local Kubernetes environment. In order to follow these instruction you will need to have installed [Helm](https://helm.sh) and a Kubernetes environment on your machine along with the kubectl CLI tooling.
+
+The observability stack is comprised of the following components:
+- <b>[Grafana Loki Stack](https://grafana.com/docs/loki/latest/):</b> is a set of components that can be composed into a fully featured logging stack. The individual components are discuss in more detail below.
+    - <b>Loki:</b> Unlike other logging systems, Loki is built around the idea of only indexing metadata about your logs: labels (just like Prometheus labels). Typically, log data itself is then compressed and stored in chunks in object stores such as S3 or GCS, or even locally on the filesystem. However, for this local example the data isn't being stored in this fashion. Your data will be lost when the stack is deleted from your local K8s environment, or your machine is restarted.
+    - <b>[Promtail](https://grafana.com/docs/loki/latest/clients/promtail/):</b> Promtail is an agent which ships the contents of local logs to a private Grafana Loki instance. Is primarily discovers targets, attaches labels to log streams, and pushes them to the Loki instance.
+    - <b>[Prometheus](https://prometheus.io/docs/introduction/overview/):</b> Prometheus is an open-source systems monitoring and alerting toolkit.
+    - <b>[Grafana](https://grafana.com/grafana/):</b> Grafana allows you to query, visualize, and alert on your log data.
+- <b>[Grafan Tempo](https://grafana.com/oss/tempo/):</b> Tempo is an open source high-scale distributed tracing backend. It only requires object storage to operate, and is deeply integrated with Grafana, Prometheus, and Loki. Tempo can be used with any of the open source tracing protocols, including Jaeger, Zipkin, and OpenTelemetry.
+
+## Install Loki Stack
+Create a namespace to deploy observability components to:
+```
+kubectl create namespace observe
+```
+Add the Helm repository:
+```
+helm repo add grafana https://grafana.github.io/helm-charts
+helm repo update
+```
+Install the loki-stack with the a customized values file:
+```
+helm upgrade --install loki grafana/loki-stack -f loki-stack-values.yaml -n observe
+```
+The custom values file disables Fluent Bit in favor of Promtail for sending logs to Loki. We also disable persistent storage for a local environment.
+## Install Tempo
+Install Tempo using default values:
+```
+helm upgrade --install tempo grafana/tempo -n observe
+```
+## Install Grafana
+Install Grafana with a custom values file:
+```
+helm upgrade --install grafana grafana/grafana -f grafana-values.yaml -n observe
+```
+The values file sets the Grafana web app credentials and defines 3 data sources:
+- <b>Tempo:</b> This is where the otel instrumented applications are exporting metrics to. The <i>traces to logs</i> feature is enabled, and uses the K8s namespace, trace ID, and span ID to construct a Loki query. Ultimately, this allows you to easily display the logs associated with a distributed trace.
+- <b>Loki:</b> This is where our applications that are annotated for promtail log scraping are sending pod logs to. A derived field (traceId) is configured which is indexed by Loki and allows us to display Tempo traces associated with the trace IDs in our logs.
+- <b>Prometheus:</b> The Artemis broker has been configured to export metrics with the Prometheus plugin. This data source allows us to query and visualize them.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!-- Build the JAR -->
 mvn clean install -DskipTests
 
@@ -48,7 +104,7 @@ kubectl apply -f opentelemetry-collector-deployment.yaml
 
 <!-- See or remove everything -->
 kubectl get all
-kubectl delete deployments,pod,svc,statefulset --all
+kubectl delete deployments,pod,svc,statefulset,daemonset,configmap --all
 
 <!-- Remove specific objects -->
 kubectl delete svc camel-acct-api-gateway-svc
