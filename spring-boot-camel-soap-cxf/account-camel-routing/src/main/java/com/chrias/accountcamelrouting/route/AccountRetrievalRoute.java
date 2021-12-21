@@ -14,9 +14,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AccountMultiCastAggregationRoute extends RouteBuilder {
+public class AccountRetrievalRoute extends RouteBuilder {
 
-    Logger log = LoggerFactory.getLogger(AccountMultiCastAggregationRoute.class);
+    Logger log = LoggerFactory.getLogger(AccountRetrievalRoute.class);
 
     @Override
     public void configure() throws Exception {
