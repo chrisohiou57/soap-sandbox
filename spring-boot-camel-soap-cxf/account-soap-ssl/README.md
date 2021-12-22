@@ -8,7 +8,7 @@ The commands below generate the artifacts required to configure mutual authentic
 ## Disclaimer
 While you could, it is unlikely that you will configure applications like this in PROD. This is just a good exercise for understanding what mTLS is, and an exploration of the native Spring Boot support for SSL. In an enterprise setting, you would likely be terminating mTLS at the API Gateway or Load Balancer fronting your applications.
 
-Using tools such as [Linkerd](https://linkerd.io/2.9/tasks/securing-your-service/) would be a much better way to achieve mTLS within a K8s cluster. To set up mTLS for public traffic coming into your K8s cluster you can terminate mTLS at the load balancer fronting your K8s Ingresses. So, for running things in a local K8s cluster don't even worry about it.
+Using tools such as [Linkerd](https://linkerd.io/2.9/tasks/securing-your-service/) would be a much better way to achieve mTLS within a K8s cluster. To set up mTLS for public traffic coming into your K8s cluster you can terminate mTLS at the load balancer fronting your K8s Ingresses. So, for running things in a local K8s cluster don't even bother using the <b>mTLS</b> profile.
 
 # Create SSL Certificates & Keystore/Trustore for Mutual Authentication (mTLS)
 

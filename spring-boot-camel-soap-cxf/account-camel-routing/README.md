@@ -20,4 +20,9 @@ One of the benefits that we get by binding our SOAP proxies to Camel routes is t
 - [OnCompletion](cuisinart) - The `AccountCreationRoute` executes a remote SOAP API call to the retail or investment SOAP API, depending on the account type in the request, to create a new account. When the remote downstream API call succeeds the route emits a message to a messaging broker via JMS. If the downstream API call fails the message is not emitted.
 
 ## WS-Security
-The cross cutting WS-Security concern is implemented and terminated in the Gateway. WS-Security is not implemented in the downstream SOAP APIs. 
+The cross cutting WS-Security concern is implemented in the gateway. WS-Security is not implemented in the downstream retail and investment account SOAP APIs. So, authentication/authorization for clients will happen in the gateway and it will handle communication with downstream APIs that are not protected with WS-Security.
+
+In PROD you would still want to have some protection in place for the downstream APIs. You will want to ensure communication happens over HTTPS. Since the gateway is fronting traffic to back-end APIs you can limit access to these services by not offering ingress paths into your K8s cluster for these services.
+
+## Administration
+Hawtio is a pluggable management console for Java stuff which supports any kind of JVM, any kind of container (Tomcat, Jetty, Spring Boot, etc), and any kind of Java technology and middleware. This gateway project is configured to use Hawtio with the [camel management features](https://github.com/hawtio/hawtio-integration/blob/master/plugins/camel/doc/help.md). You can 

@@ -1,5 +1,5 @@
 # Overview
-TODO describe what it do
+This application is both a retail and investment account SOAP API in our multi-module banking demo project. It is also a demonstration of creating SOAP services in a microservice architectural style with Spring Boot and CXF. The project uses the Spring IoC container and Spring Profiles to inject the appropriate classes to handle retail or investment accounts. In this demo archicture, these services are proxied by a [Camel API Gateway](https://github.com/chrisohiou57/soap-sandbox/blob/main/spring-boot-camel-soap-cxf/account-camel-routing/src/main/resources/application-mTLS.properties) implementation.
 
 ## Building the application
 To build the project you will need Maven installed, or you can use the Maven wrapper checked in with the project. The command below will generate the Fat JAR.
@@ -13,7 +13,7 @@ docker build -t chrias/account-soap-service .
 
 ## Running the application
 ### Spring Profiles
-The application is meant to run under one of two Spring Profiles: <b>retail</b> or <b>investment</b>. See the `application-retail.properties` and `applciation-investment.properties` files to see profile specific configs. You will also notice that certain classes are annotated with `@Profile("retail)"` or `@Profile("investment)"` to load the appropriate classes to simulate different account API back-ends.
+The application is meant to run under one of two Spring Profiles: <b>retail</b> or <b>investment</b>. See the `application-retail.properties` and `applciation-investment.properties` files to see profile specific configs. Also, note the use of the `@Profile("retail)"` or `@Profile("investment)"` annotations in the `CxfConfigRetail` and `CxfConfigInvestment` classes. This is how the appropriate classes are loaded for the provided profile to simulate different account API back-ends.
 
 An additional <b>mTLS</b> profile can be added if you have followed the steps below to generate SSL certs for mutual authentication (mTLS). This will set up the appropriate keystore and truststore components for mTLS. See `application-mTLS.properties` file for more details.
 
@@ -23,7 +23,7 @@ The application expects several properties to run. These are standard Spring Boo
 - <b>server.port</b> Since the app is expected to run multiple instances under two different profiles you want to be clear about which port each profile is running on.
 
 ### Running in an IDE
-The project includes a `launch.json` file in the `.vscode` directory that can be used in VS Code. The <b>Spring Boot Tools</b> and <b>Language Support for Java</b> should also be installed. You can follow the [documentation](https://code.visualstudio.com/docs/java/java-spring-boot) to get started with that. You can also easily configure similar run/debug configs in another IDE like IntelliJ by referencing the details in `launch.json`.
+The project includes a `launch.json` file in the `.vscode` directory that can be used in VS Code. The <b>Spring Tools 4</b> and <b>Language Support for Java</b> extensions should also be installed. You can follow the [documentation](https://code.visualstudio.com/docs/java/java-spring-boot) to get started with that. You can also easily configure similar run/debug configs in another IDE like IntelliJ by referencing the details in `launch.json`.
 
 ### Running the Fat JAR
 You can execute the Fat JAR by following the Maven build instructions above and running the following command.
