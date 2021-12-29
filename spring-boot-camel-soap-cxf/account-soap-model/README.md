@@ -1,7 +1,7 @@
 # Overview
 This project is used to generate JAX-WS artifacts for our SOAP services using the [cxf-codegen-plugin Maven plugin](https://cxf.apache.org/docs/maven-cxf-codegen-plugin-wsdl-to-java.html). When you build the project it will generate the JAX-WS artifcats and package them in a JAR. Packaging these classes in a JAR is useful as it can be used for the Camel API Gateway and account SOAP back-end service implementations.
 
-You will notice that the configuration for the cxf-codegen-plugin maps the targetNamespace from our WSDLs to the package name of our choosing.
+You will notice that the configuration for the cxf-codegen-plugin maps the <b>targetNamespace</b> from our WSDLs to the package name of our choosing.
 ```
 <wsdlOptions>
     <wsdlOption>

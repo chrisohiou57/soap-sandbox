@@ -27,15 +27,15 @@ spec:
         resources: {}
         env:
         - name: SPRING_ARTEMIS_BROKERURL
-          value: tcp://10.1.1.237:61616
+          value: tcp://ex-aao-hdls-svc.message.svc.cluster.local:61616
         - name: OTEL_RESOURCE_ATTRIBUTES
           value: service.name=account-event-subscriber
         - name: OTEL_EXPORTER_OTLP_ENDPOINT
-          value: http://$(TEMPO_SERVICE_HOST):$(TEMPO_PORT_55680_TCP_PORT)
+          value: http://tempo.observe.svc.cluster.local:55680
         - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
-          value: http://$(TEMPO_SERVICE_HOST):$(TEMPO_PORT_55680_TCP_PORT)
+          value: http://tempo.observe.svc.cluster.local:55680
         - name: OTEL_EXPORTER_OTLP_METRICS_ENDPOINT
-          value: http://$(TEMPO_SERVICE_HOST):$(TEMPO_PORT_55680_TCP_PORT)
+          value: http://tempo.observe.svc.cluster.local:55680
         - name: K8S_NAMESPACE
           valueFrom:
             fieldRef:

@@ -67,6 +67,8 @@
 			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-bean</artifactId>
 		</dependency>
+
+		<!-- Messaging -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-artemis</artifactId>
@@ -75,6 +77,15 @@
 			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-jms</artifactId>
 		</dependency>
+
+		<!-- https://camel.apache.org/components/3.14.x/aws2-sqs-component.html#_spring_boot_auto_configuration -->
+		<!-- https://access.redhat.com/documentation/en-us/red_hat_fuse/7.1/html/apache_camel_component_reference/aws-sqs-component -->
+		<dependency>
+			<groupId>org.apache.camel.springboot</groupId>
+			<artifactId>camel-aws2-sqs-starter</artifactId>
+		</dependency>
+
+		<!-- JSON Support -->
 		<dependency>
 			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-jackson</artifactId>

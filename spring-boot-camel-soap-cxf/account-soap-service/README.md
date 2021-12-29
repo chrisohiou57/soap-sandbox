@@ -42,10 +42,10 @@ It is not recommended to use the <b>mTLS</b> Spring Profile when running in K8s.
 
 
 <!-- NOTE that I had to add imagePullPolicy: Never to pull from my local repo -->
-kubectl apply -f acct-svc-retail-deployment.yaml
-kubectl apply -f acct-svc-investment-deployment.yaml
-kubectl apply -f acct-svc-camel-deployment.yaml
-kubectl apply -f acct-svc-subscriber-deployment.yaml
+kubectl apply -f acct-svc-retail-deployment.yaml -n soapdemo
+kubectl apply -f acct-svc-investment-deployment.yaml -n soapdemo
+kubectl apply -f acct-svc-camel-deployment.yaml -n soapdemo
+kubectl apply -f acct-svc-subscriber-deployment.yaml -n soapdemo
 kubectl apply -f opentelemetry-collector-deployment.yaml
 
 <!-- See or remove everything -->

@@ -28,11 +28,11 @@ spec:
         - name: OTEL_RESOURCE_ATTRIBUTES
           value: service.name=account-invest-service
         - name: OTEL_EXPORTER_OTLP_ENDPOINT
-          value: http://$(TEMPO_SERVICE_HOST):$(TEMPO_PORT_55680_TCP_PORT)
+          value: http://tempo.observe.svc.cluster.local:55680
         - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
-          value: http://$(TEMPO_SERVICE_HOST):$(TEMPO_PORT_55680_TCP_PORT)
+          value: http://tempo.observe.svc.cluster.local:55680
         - name: OTEL_EXPORTER_OTLP_METRICS_ENDPOINT
-          value: http://$(TEMPO_SERVICE_HOST):$(TEMPO_PORT_55680_TCP_PORT)
+          value: http://tempo.observe.svc.cluster.local:55680
 status: {}
 ---
 apiVersion: v1

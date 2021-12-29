@@ -7,6 +7,7 @@ import com.chrias.accountcamelrouting.processor.InvestmentCreateAccountRequestMe
 import com.chrias.accountcamelrouting.processor.InvestmentCreateAccountResponseMessageProcessor;
 import com.chrias.accountcamelrouting.processor.RetailCreateAccountRequestMessageProcessor;
 import com.chrias.accountcamelrouting.processor.RetailCreateAccountResponseMessageProcessor;
+import com.chrias.accountcamelrouting.security.WsSecuritySoapHeaderRemovalProcessor;
 import com.chrias.camelsoapmodel.account.AccountType;
 import com.chrias.camelsoapmodel.account.CreateAccountResponse;
 
@@ -37,6 +38,7 @@ public class AccountCreationRoute extends RouteBuilder {
             .end()
             // Here we begin the normal route. The EIP above executes depending on the result below.
             .to("micrometer:counter:camelcreateAccountApiCounter")
+            .process(new WsSecuritySoapHeaderRemovalProcessor())
             .choice()
                 .when(exchange -> {
                     MessageContentsList payload = exchange.getIn().getBody(MessageContentsList.class);
@@ -77,8 +79,10 @@ public class AccountCreationRoute extends RouteBuilder {
                 exchange.getMessage().setBody(response.getAccount());
             })
             .marshal().json()
-            .log("Publishing account creation message in JSON format: ${body}")
-            .to(String.format("jms:%s?jmsMessageType=Text", accountCreationQueue))
+            .log("Publishing account creation messages in JSON format: ${body}")
+            .multicast() 
+                .to(String.format("jms:%s?jmsMessageType=Text", accountCreationQueue))
+                .to("aws2-sqs://arn:aws:sqs:us-east-2:621297402434:accountCreation")
             .end();
     }
     

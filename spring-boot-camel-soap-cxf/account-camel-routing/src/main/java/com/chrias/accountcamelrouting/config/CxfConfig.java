@@ -58,11 +58,12 @@ public class CxfConfig {
     }
 
     @Bean
-    public CxfEndpoint cxfCreateAccountService() throws ClassNotFoundException {
+    public CxfEndpoint cxfCreateAccountService(WSS4JInInterceptor usernamePasswordInterceptor) throws ClassNotFoundException {
         CxfEndpoint endpoint = new CxfEndpoint();
         endpoint.setAddress("/createAccount");
         endpoint.setServiceClass("com.chrias.camelsoapmodel.account.AccountsPort");
         endpoint.setDefaultOperationName("createAccount");
+        endpoint.getInInterceptors().add(usernamePasswordInterceptor);
         return endpoint;
     }
 
