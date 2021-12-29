@@ -1,0 +1,16 @@
+## TODO (Next Steps)
+- Document what is here in terms of apps, otel, observability
+- Convert account-event-subscriber into Camel app and handle all async notifications
+- Run in EKS
+    - Adapt [this workshop](https://www.eksworkshop.com/010_introduction/)
+    - Documentation
+    - [AWS otel](https://aws.amazon.com/otel/?otel-blogs.sort-by=item.additionalFields.createdDate&otel-blogs.sort-order=desc)
+- Add additional connectivity POCs
+    - Lambda to Camel HTTP Webhook
+    - Invoke Lambda
+    - AmazonMQ
+    - SNS/SQS pub/sub
+    - gRPC?
+- Run in Camel K
+    - Documentation
+    - <b>What else?</b>
