@@ -1,11 +1,5 @@
 # Overview
-This application is a SOAP API Gateway in our multi-module banking demo project. It is implemented using [Apache Camel](https://camel.apache.org/) and its component libraries. Here is a good excerpt from the book <i>Microservices for [Java Developers, 2nd Edition by Rafael Benevides, Christian Posta](https://www.oreilly.com/library/view/microservices-for-java/9781492038290/)</i> that describes why an application such as this is beneficial.
-
-> As the number of microservices grows, the complexity for the client who is consuming these APIs also grows.
-> 
-> Real applications could have dozens or even hundreds of microservices. A simple process like buying a book from an online store like Amazon can cause a client (your web browser or your mobile app) to use several other microservices. A client that has direct access to the microservice would have to locate and invoke them and handle any failures they caused itself. So, usually a better approach is to hide those services behind a new service layer. This aggregator service layer is known as an API gateway.
-> 
-> Another advantage of using an API gateway is that you can add cross-cutting concerns like authorization and data transformation in this layer. Services that use non-internet-friendly protocols can also benefit from the usage of an API gateway. However, keep in mind that it usually isn’t recommended to have a single API gateway for all the microservices in your application. If you (wrongly) decided to take that approach, it would act just like a monolithic bus, violating microservice independence by coupling all the microservices. Adding business logic to an API gateway is a mistake and should be avoided.
+This application is a SOAP API Gateway in our multi-module banking demo project. It is implemented using [Apache Camel](https://camel.apache.org/) and its component libraries.
 
 # Features
 The primary features implemented in this SOAP API Gateway implementation are described below.
