@@ -40,3 +40,40 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
+        - name: AWS_REGION
+          value: us-east-2
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: aws-iam-user-administrator
+              key: accessKeyId
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: aws-iam-user-administrator
+              key: secretAccessKey
+        - name: SQS_ACCOUNT_CREATION_ARN
+          valueFrom:
+            secretKeyRef:
+              name: acct-app-secrets
+              key: sqsAccountCreationArn
+        - name: AWS_MQ_BROKER
+          valueFrom:
+            secretKeyRef:
+              name: acct-app-secrets
+              key: awsMqBroker
+        - name: AWS_MQ_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: acct-app-secrets
+              key: awsMqUsernname
+        - name: AWS_MQ_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: acct-app-secrets
+              key: awsMqPassword
+        - name: S3_ACCOUNT_CREATION_ARN
+          valueFrom:
+            secretKeyRef:
+              name: acct-app-secrets
+              key: s3AccountCreationArn

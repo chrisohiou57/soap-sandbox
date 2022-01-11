@@ -85,10 +85,27 @@
 			<artifactId>camel-aws2-sqs-starter</artifactId>
 		</dependency>
 
+		<!-- AmazonMQ via AMQP/Qpid -->
+		<!-- https://aws.amazon.com/blogs/compute/integrating-amazon-mq-with-other-aws-services-via-apache-camel/ -->
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-amqp</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel.springboot</groupId>
+			<artifactId>camel-amqp-starter</artifactId>
+		</dependency>
+
 		<!-- JSON Support -->
 		<dependency>
 			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-jackson</artifactId>
+		</dependency>
+
+		<!-- JAXB (XML) Support -->
+		<dependency>
+			<groupId>org.apache.camel.springboot</groupId>
+			<artifactId>camel-jaxb-starter</artifactId>
 		</dependency>
 
 		<!-- https://issues.apache.org/jira/browse/CXF-8457 -->
@@ -109,6 +126,16 @@
 		<dependency>
 			<groupId>org.apache.camel.springboot</groupId>
 			<artifactId>camel-opentelemetry-starter</artifactId>
+		</dependency>
+		
+		<!-- File Processing -->
+		<dependency>
+			<groupId>org.apache.camel.springboot</groupId>
+			<artifactId>camel-aws2-s3-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel.springboot</groupId>
+			<artifactId>camel-csv-starter</artifactId>
 		</dependency>
 
 		<dependency>
